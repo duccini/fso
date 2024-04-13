@@ -42,6 +42,27 @@ app.get("/api/notes/:id", (request, response) => {
   }
 });
 
+app.put("/api/notes/:id", (request, response) => {
+  const routeID = Number(request.params.id);
+  const note = notes.find((note) => note.id === routeID);
+
+  if (!note) {
+    return response.status(404).end();
+  }
+
+  const updatedNote = request.body;
+
+  notes = notes.map((note) => {
+    if (note.id !== routeID) {
+      return note;
+    } else {
+      return updatedNote;
+    }
+  });
+
+  response.json(updatedNote);
+});
+
 app.delete("/api/notes/:id", (request, response) => {
   const id = Number(request.params.id);
   notes = notes.filter((note) => note.id !== id);
